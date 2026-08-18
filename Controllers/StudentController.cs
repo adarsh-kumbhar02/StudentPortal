@@ -1,62 +1,54 @@
 using Microsoft.AspNetCore.Mvc;
-namespace StudentPortal.Controllers
+using StudentPortal.Data;
+using StudentPortal.Models;
+
+namespace StudentPortal.Controllers{
+public class StudentController : Controller
 {
-    public class StudentController : Controller
+    private readonly StudentPortalContext _context;
+
+    public StudentController(StudentPortalContext context)
     {
-        public IActionResult Index()
-        {
-            ViewBag.Message="Welcome to Student Portal";
-            ViewBag.Today=DateTime.Now.ToShortDateString();
-            ViewData["StudentCount"]=10;
-            return View();
-        }
+        _context = context;
+    }
 
-        public IActionResult Details(int id)
-        {
-           Dictionary<int , string> students= new Dictionary<int, string>()
-           {
-               {101,"Adarsh"},
-               {102,"Rohit"},
-               {103,"Sahil"},
-               {104,"Aaditi"},
-               {105,"Vyankatesh"}
-           };
+    public IActionResult Index()
+    {
+        ViewBag.WelcomeMessage = "Welcome to Student Portal";
+        ViewBag.Today = DateTime.Now.ToShortDateString();
+        ViewData["StudentCount"] = _context.Students.Count();
+        return View();
+    }
 
-            if (students.ContainsKey(id))
-            {
-                ViewBag.Message=$"ID: {id}, Name:{students[id]}";
-            }
-            else
-            {
-                ViewBag.Message=$"Student ID {id} doesn't exist.";
-            }
+    public IActionResult Details(int id)
+    {
+        var student = _context.Students.FirstOrDefault(s => s.Id == id);
+        if (student == null) return NotFound();
+        return View(student);
+    }
 
-            return View();
-        }
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
+    [HttpPost]
+    public IActionResult Create(string name, int age, string course)
+    {
+        var student = new Student { Name = name, Age = age, Course = course };
+        _context.Students.Add(student);
+        _context.SaveChanges();
 
-        [HttpPost]
-        public IActionResult Create(string name, int age, string course)
-        {
-            ViewBag.Name=name;
-            ViewBag.Age=age;
-            ViewBag.Course=course;
-            return View("Confirmation");
-        }
+        ViewBag.Message = $"Student {name} added!";
+        return View("Confirmation");
+    }
 
-        [Route("students/all")]
-        public IActionResult AllStudents(){
-            List <string> students=new List<string>()
-            {
-               "Adarsh", "Rohit", "Sahil", "Aaditi", "Vyankatesh"
-            };
-
-            return View(students);
-        }
+    [Route("students/all")]
+    public IActionResult AllStudents()
+    {
+        var students = _context.Students.ToList();
+        return View(students);
+    }
     }
 }

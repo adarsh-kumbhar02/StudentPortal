@@ -1,14 +1,28 @@
-<h2>Student Registration</h2>
+@{
+    ViewData["Title"] = "Add Student";
+}
 
-<form method="post">
-    <label for="">Name</label><br />
-    <input type="text" name="name" id=""><br /><br />
+<h2>Add New Student</h2>
 
-    <label for="">Age:</label><br />
-    <input type="number" name="age" id=""><br /><br />
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" name="name" required />
+    </div>
 
-    <label for="">Course:</label><br />
-    <input type="text" name="course" id=""><br /><br />
+    <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" class="form-control" id="age" name="age" required />
+    </div>
 
-    <button type="submit">Register</button>
+    <div class="form-group">
+        <label for="course">Course</label>
+        <input type="text" class="form-control" id="course" name="course" required />
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Add Student</button>
 </form>
+
+<br />
+<a asp-action="Index">Back to Home</a>

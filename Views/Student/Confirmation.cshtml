@@ -1,4 +1,8 @@
-<h2>Student Register Successfully</h2>
-<p>Name: @ViewBag.Name</p>
-<p>Age:@ViewBag.Age</p>
-<p>Course:@ViewBag.Course</p>
+@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<a asp-action="AllStudents">View All Students</a> |
+<a asp-action="Create">Add Another Student</a>

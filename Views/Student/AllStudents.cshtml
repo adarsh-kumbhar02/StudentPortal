@@ -1,9 +1,41 @@
-@model List<string>
+@model IEnumerable<StudentPortal.Models.Student>
+
+@{
+    ViewData["Title"] = "All Students";
+}
 
 <h2>All Students</h2>
 
-<ul>
-    @foreach(var student in Model){
-        <li>@student</li>
-    }
-</ul>
+<a asp-action="Create">Add New Student</a>
+<br /><br />
+
+@if (!Model.Any())
+{
+    <p>No students found.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Age</td>
+                    <td>@student.Course</td>
+                    <td><a asp-action="Details" asp-route-id="@student.Id">View</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

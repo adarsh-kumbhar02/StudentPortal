@@ -1,5 +1,11 @@
-<h1>@ViewBag.Message</h1>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h2>@ViewBag.WelcomeMessage</h2>
 <p>Today's Date: @ViewBag.Today</p>
-<p>Total Students:
-    @ViewData["StudentCount"]
-</p>
+<p>Total Students: @ViewData["StudentCount"]</p>
+
+<hr />
+<a asp-action="AllStudents">View All Students</a> |
+<a asp-action="Create">Add New Student</a>
